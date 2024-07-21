@@ -7,10 +7,13 @@
 
     {% for post in posts %}
         <h2>{{ post.title }}</h2>
+        <h3>user - {{ post.user }}</h3>
         <p>{{ post.desc }}</p>
         {% if post.pon_img %}
             <img src="{{ post.pon_img.url }}" alt="..."width="100px" height="100px">
         {% endif %}
+        <br>
+        <br>
     {% endfor %}
     
     
@@ -25,5 +28,6 @@
         <a href="{% url 'signupuser' %}">signup</a>
         <a href="{% url 'loginuser' %}">login</a>
     {% endif %}
+    <a href="{% url 'mypons' %}">my pons</a>
 
 {% endblock %}

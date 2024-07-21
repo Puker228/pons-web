@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -9,7 +9,7 @@ from .forms import PostForm
 
 
 def home(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all()[:5]
     return render(request, 'posts/home.html', {'posts': posts})
 
 
@@ -22,7 +22,7 @@ def signupuser(request):
                 user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
                 user.save()
                 login(request, user)
-                return redirect('allpons')
+                return redirect('mypons')
             except IntegrityError:
                 return render(request, 'auth/signup.html', {'form': UserCreationForm(), 'error': 'That username has already been taken'})    
         else:
@@ -38,7 +38,7 @@ def loginuser(request):
             return render(request, 'auth/login.html', {'form': AuthenticationForm(), 'error': 'user is none'})
         else:
             login(request, user)
-            return redirect('allpons')
+            return redirect('mypons')
 
 
 def logoutuser(request):
@@ -47,8 +47,9 @@ def logoutuser(request):
         return redirect('home')
 
 
-def allpons(request):
-    return render(request, 'posts/allpons.html')
+def mypons(request):
+    posts = Post.objects.filter(user=request.user)
+    return render(request, 'posts/mypons.html', {'posts': posts})
 
 
 def createpons(request):
@@ -60,6 +61,20 @@ def createpons(request):
             newpost = form.save(commit=False)
             newpost.user = request.user
             newpost.save()
-            return redirect('allpons')
+            return redirect('mypons')
         except ValueError:
             return render(request, 'posts/createpons.html', {'form': PostForm(), 'error': 'Bad data passed in. Try again'})
+        
+
+def editpons(request, post_pk):
+    posts = get_object_or_404(Post, pk=post_pk, user=request.user)
+    if request.method == 'GET':
+        form = PostForm(instance=posts)
+        return render(request, 'posts/editpons.html', {'posts': posts, 'form': form})
+    else:
+        try:
+            form = PostForm(request.POST, instance=posts)
+            form.save()
+            return redirect('mypons')
+        except ValueError:
+            return render(request, 'posts/editpons.html', {'posts': posts, 'form': form, 'error': 'Bad info'})

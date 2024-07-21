@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h2>My pons</h2>
+    <ul>
+        {% for post in posts %}
+        <a href="{% url 'editpons' post.id%}"><li>{{ post.title }}</li></a>
+        {% endfor %}
+    </ul>
+    <h1>{{ error }}</h1>
+    <br>
+    <a href="{% url 'createpons' %}">create</a>
+
+{% endblock %}
