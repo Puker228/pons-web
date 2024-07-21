@@ -12,6 +12,18 @@
             <img src="{{ post.pon_img.url }}" alt="...">
         {% endif %}
     {% endfor %}
-    <a href="{% url 'signupuser' %}">signup</a>
+    
+    
+    {% if user.is_authenticated %}
+        Logged in as {{ user.username }}
+        <br>
+        <form action="{% url 'logoutuser' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    {% else %}
+        <a href="{% url 'signupuser' %}">signup</a>
+        <a href="{% url 'loginuser' %}">login</a>
+    {% endif %}
 
 {% endblock %}
