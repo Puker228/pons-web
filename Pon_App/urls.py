@@ -32,6 +32,7 @@ urlpatterns = [
     # posts
     path('', views.home, name='home'),
     path('allpons/', views.allpons, name='allpons'),
+    path('create/', views.createpons, name='createpons'),
 ]
 
 if settings.DEBUG:

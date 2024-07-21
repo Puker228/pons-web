@@ -1,0 +1,9 @@
+from django.forms import ModelForm
+
+from .models import Post
+
+
+class PostForm(ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'desc', 'pon_img', 'pon_file']

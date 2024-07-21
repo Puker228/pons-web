@@ -5,10 +5,11 @@ from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
 
 from .models import Post
+from .forms import PostForm
 
 
 def home(request):
-    posts = Post.objects.all()[:5]
+    posts = Post.objects.all()
     return render(request, 'posts/home.html', {'posts': posts})
 
 
@@ -48,3 +49,17 @@ def logoutuser(request):
 
 def allpons(request):
     return render(request, 'posts/allpons.html')
+
+
+def createpons(request):
+    if request.method == 'GET':
+        return render(request, 'posts/createpons.html', {'form': PostForm()})
+    else:
+        try:
+            form = PostForm(request.POST)
+            newpost = form.save(commit=False)
+            newpost.user = request.user
+            newpost.save()
+            return redirect('allpons')
+        except ValueError:
+            return render(request, 'posts/createpons.html', {'form': PostForm(), 'error': 'Bad data passed in. Try again'})

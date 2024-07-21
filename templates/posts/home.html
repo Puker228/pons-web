@@ -9,18 +9,18 @@
         <h2>{{ post.title }}</h2>
         <p>{{ post.desc }}</p>
         {% if post.pon_img %}
-            <img src="{{ post.pon_img.url }}" alt="...">
+            <img src="{{ post.pon_img.url }}" alt="..."width="100px" height="100px">
         {% endif %}
     {% endfor %}
     
     
     {% if user.is_authenticated %}
-        Logged in as {{ user.username }}
-        <br>
         <form action="{% url 'logoutuser' %}" method="post">
+            <h2>Logged in as {{ user.username }}</h2>
             {% csrf_token %}
             <button type="submit">Logout</button>
         </form>
+        <a href="{% url 'createpons' %}">create</a>
     {% else %}
         <a href="{% url 'signupuser' %}">signup</a>
         <a href="{% url 'loginuser' %}">login</a>
