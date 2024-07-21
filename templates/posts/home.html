@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-{% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-<body>
-    <img src="{% static 'ada.jpg' %}" alt="...">
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+
+{% block content %}
+
     {% for post in posts %}
         <h2>{{ post.title }}</h2>
         <p>{{ post.desc }}</p>
@@ -15,5 +12,6 @@
             <img src="{{ post.pon_img.url }}" alt="...">
         {% endif %}
     {% endfor %}
-</body>
-</html>
+    <a href="{% url 'signupuser' %}">signup</a>
+
+{% endblock %}

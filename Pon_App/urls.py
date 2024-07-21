@@ -24,7 +24,12 @@ from posts import views
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', views.home, name='home')
+    # auth
+    path('signup/', views.signupuser, name='signupuser'),
+
+    # posts
+    path('', views.home, name='home'),
+    path('allpons/', views.allpons, name='allpons'),
 ]
 
 if settings.DEBUG:
