@@ -9,7 +9,7 @@ from .forms import PostForm
 
 
 def home(request):
-    posts = Post.objects.all()[:5]
+    posts = Post.objects.all()
     return render(request, 'posts/home.html', {'posts': posts})
 
 
@@ -57,7 +57,7 @@ def createpons(request):
         return render(request, 'posts/createpons.html', {'form': PostForm()})
     else:
         try:
-            form = PostForm(request.POST)
+            form = PostForm(request.POST, request.FILES)
             newpost = form.save(commit=False)
             newpost.user = request.user
             newpost.save()
