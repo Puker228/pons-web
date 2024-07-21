@@ -34,6 +34,7 @@ urlpatterns = [
     path('mypons/', views.mypons, name='mypons'),
     path('create/', views.createpons, name='createpons'),
     path('edit/<int:post_pk>', views.editpons, name='editpons'),
+    path('edit/<int:post_pk>/deleted', views.deletedpons, name='deletedpons'),
 ]
 
 if settings.DEBUG:

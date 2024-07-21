@@ -67,14 +67,21 @@ def createpons(request):
         
 
 def editpons(request, post_pk):
-    posts = get_object_or_404(Post, pk=post_pk, user=request.user)
+    post = get_object_or_404(Post, pk=post_pk, user=request.user)
     if request.method == 'GET':
-        form = PostForm(instance=posts)
-        return render(request, 'posts/editpons.html', {'posts': posts, 'form': form})
+        form = PostForm(instance=post)
+        return render(request, 'posts/editpons.html', {'post': post, 'form': form})
     else:
         try:
-            form = PostForm(request.POST, instance=posts)
+            form = PostForm(request.POST, instance=post)
             form.save()
             return redirect('mypons')
         except ValueError:
-            return render(request, 'posts/editpons.html', {'posts': posts, 'form': form, 'error': 'Bad info'})
+            return render(request, 'posts/editpons.html', {'posts': post, 'form': form, 'error': 'Bad info'})
+        
+
+def deletedpons(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk, user=request.user)
+    if request.method == 'POST':
+        post.delete()
+        return redirect('mypons')
